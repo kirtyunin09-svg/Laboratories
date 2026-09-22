@@ -1,0 +1,33 @@
+#include <iostream>
+#include <string>
+
+int main() {      //Написание главной функции
+	double value;
+	std::string unit;
+	std::cout << "Enter a number: ";
+	std::cin >> value;
+	if (std::cin.fail()) {       //Проверка на некорректность ввода
+		std::cout << "That's not a number!" << std::endl;
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		return 0;
+	}
+	if (value < 0) {     //Проверка на отрицательные числа
+		std::cout << "Enter a positive number!" << std::endl;
+		return 0;
+	}
+	std::cout << "Enter a unit (cm, m, km): ";
+	std::cin >> unit;
+
+	double result = 0.0;
+	if (unit == "cm") result = value / 100.0;    //Условный оператор if-else
+	else if (unit == "m") result = value;
+	else if (unit == "km") result = value * 1000.0;
+	else {
+		std::cout << "Incorrect measure unit\n";
+		return 1;
+	}
+
+	std::cout << "Result in meters: " << result << "\n";
+	return 0;
+}
