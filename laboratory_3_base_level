@@ -1,0 +1,21 @@
+#include <iostream>
+#include <limits>
+
+int main() {
+	double number;
+	std::cout << "Enter a number: ";
+	std::cin >> number;
+	if (std::cin.fail()) {
+		std::cout << "That's not a number!" << std::endl;
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		return 0;
+	}
+	if (number >= 10 and number <= 20) {
+		std::cout << "In the interval" << std::endl;
+	}
+	else {
+		std::cout << "Out of the interval" << std::endl;
+	}
+	return 0;
+}
