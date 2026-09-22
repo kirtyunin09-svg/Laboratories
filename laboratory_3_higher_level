@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+
+int main() {
+    // Настройка локализации для корректного вывода русского текста в консоли
+    std::setlocale(LC_ALL, "Russian");
+
+    int amount;
+    std::cout << "Введите сумму для снятия (кратную 100, до 100 000): ";
+    std::cin >> amount;
+    if (std::cin.fail()) {     //Проверка на некорректный ввод
+        std::cout << "That's not a number!" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return 0;
+    }
+
+    // 1. Проверка условий (положительная, не превышает лимит, кратна 100)
+    if (amount <= 0) {
+        std::cout << "Ошибка: сумма должна быть больше нуля." << std::endl;
+        return 1;
+    }
+    if (amount > 100000) {
+        std::cout << "Ошибка: сумма превышает лимит в 100 000." << std::endl;
+        return 1;
+    }
+    if (amount % 100 != 0) {
+        std::cout << "Ошибка: сумма должна быть кратна 100." << std::endl;
+        return 1;
+    }
+
+    // Доступные номиналы купюр в порядке убывания
+    std::vector<int> nominals = { 5000, 2000, 1000, 500, 200, 100 };
+
+    int total_banknotes = 0;
+    std::cout << "\nРезультат выдачи:" << std::endl;
+
+    // 2. Жадный алгоритм подсчета купюр
+    for (int bill : nominals) {
+        if (amount >= bill) {
+            int count = amount / bill; // Количество купюр текущего номинала
+            amount %= bill;            // Остаток суммы для следующих купюр
+            total_banknotes += count;
+
+            std::cout << "Купюры номиналом " << bill << " руб.: " << count << " шт." << std::endl;
+        }
+    }
+
+    std::cout << "-----------------------------------" << std::endl;
+    std::cout << "Общее минимальное количество купюр: " << total_banknotes << " шт." << std::endl;
+
+    return 0;
+}
