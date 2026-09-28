@@ -1,0 +1,116 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <random>
+#include <ctime>
+
+// Структура для хранения вопроса, вариантов ответов и номера правильного ответа
+struct Question {
+    std::string questionText;
+    std::vector<std::string> options;
+    int correctOption; // Номер правильного ответа (1-4)
+};
+
+// Функция для проведения тестирования по выбранной теме
+void runQuiz(std::vector<Question>& questions) {
+    // Инициализация генератора случайных чисел и перемешивание вопросов
+    std::mt19937 g(static_cast<unsigned int>(std::time(nullptr)));
+    std::shuffle(questions.begin(), questions.end(), g);
+
+    int score = 0;
+    int totalQuestions = 5;
+
+    // Проверяем, чтобы в пуле было достаточно вопросов
+    if (questions.size() < totalQuestions) {
+        totalQuestions = questions.size();
+    }
+
+    std::cout << "\n--- Начало теста (всего " << totalQuestions << " вопросов) ---\n";
+
+    for (int i = 0; i < totalQuestions; ++i) {
+        std::cout << "\nВопрос " << (i + 1) << ": " << questions[i].questionText << "\n";
+
+        for (size_t j = 0; j < questions[i].options.size(); ++j) {
+            std::cout << (j + 1) << ". " << questions[i].options[j] << "\n";
+        }
+
+        int userAnswer = 0;
+        std::cout << "Ваш ответ (введите номер): ";
+        while (!(std::cin >> userAnswer) || userAnswer < 1 || userAnswer > static_cast<int>(questions[i].options.size())) {
+            std::cout << "Некорректный ввод. Пожалуйста, выберите номер ответа от 1 до " << questions[i].options.size() << ": ";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+
+        if (userAnswer == questions[i].correctOption) {
+            std::cout << "Правильно!\n";
+            score++;
+        }
+        else {
+            std::cout << "Неверно. Правильный ответ: " << questions[i].correctOption << "\n";
+        }
+    }
+
+    std::cout << "\n--- Тест завершен ---\n";
+    std::cout << "Ваш результат: " << score << " из " << totalQuestions << " правильных ответов.\n";
+}
+
+int main() {
+    // Настройка локализации для поддержки русского языка в консоли
+    std::setlocale(LC_ALL, "Russian");
+
+    // Пул вопросов по C++
+    std::vector<Question> cppQuestions = {
+        { "Какой тип данных используется для хранения целых чисел?",{ "float", "int", "char", "double" }, 2 },
+        { "Как расшифровывается ООП?",{ "Объектно-ориентированное программирование", "Оптимальное описание программ", "Основной объект программирования" }, 1 },
+        { "Какой оператор используется для выделения динамической памяти?",{ "malloc", "alloc", "new", "pointer" }, 3 },
+        { "Какое ключевое слово используется для создания класса?",{ "struct", "class", "object", "define" }, 2 },
+        { "Что из этого является логическим оператором И?",{ "&", "||", "!", "&&" }, 4 }
+    };
+
+    // Пул вопросов по Python
+    std::vector<Question> pythonQuestions = {
+        { "Как объявить функцию в Python?",{ "function", "void", "def", "func" }, 3 },
+        { "Какой тип данных является неизменяемым?",{ "list", "dict", "tuple", "set" }, 3 },
+        { "С помощью какой функции можно узнать длину списка?",{ "len()", "size()", "count()", "length()" }, 1 },
+        { "Как добавить элемент в конец списка?",{ "add()", "append()", "push()", "insert()" }, 2 },
+        { "Какое ключевое слово используется для логического умножения?",{ "and", "&&", "amp", "or" }, 1 }
+    };
+
+    // Пул вопросов по Java
+    std::vector<Question> javaQuestions = {
+        { "Каким ключевым словом создается наследование классов?",{ "implements", "extends", "inherit", "parent" }, 2 },
+        { "С какого метода начинается выполнение любой Java-программы?",{ "start()", "init()", "main()", "execute()" }, 3 },
+        { "Какой тип данных используется для хранения логических значений?",{ "boolean", "bool", "bit", "Logical" }, 1 },
+        { "Что такое JVM?",{ "Java Virtual Method", "Java Variable Memory", "Java Virtual Machine" }, 3 },
+        { "Какой класс является суперклассом для всех остальных классов в Java?",{ "Main", "Object", "Class", "Super" }, 2 }
+    };
+
+    std::cout << "Добро пожаловать в программу-экзаменатор!\n";
+    std::cout << "Выберите тему для тестирования:\n";
+    std::cout << "1. C++\n";
+    std::cout << "2. Python\n";
+    std::cout << "3. Java\n";
+    std::cout << "Ваш выбор (1-3): ";
+
+    int choice = 0;
+    while (!(std::cin >> choice) || choice < 1 || choice > 3) {
+        std::cout << "Некорректный выбор. Пожалуйста, введите число от 1 до 3: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    // Запуск теста в зависимости от выбора темы
+    if (choice == 1) {
+        runQuiz(cppQuestions);
+    }
+    else if (choice == 2) {
+        runQuiz(pythonQuestions);
+    }
+    else if (choice == 3) {
+        runQuiz(javaQuestions);
+    }
+
+    return 0;
+}
