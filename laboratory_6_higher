@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int main() {
+    const int MIN_VAL = 1;
+    const int MAX_VAL = 20;
+    const int ARR_SIZE = 15;
+
+    int arr[ARR_SIZE] = { 3, 7, 7, 1, 12, 7, 3, 20, 5, 5, 1, 9, 12, 7, 3 }; // пример данных
+
+    // Массив частот: индекс i соответствует числу i
+    std::vector<int> freq(MAX_VAL + 1, 0);
+
+    for (int i = 0; i < ARR_SIZE; ++i) {
+        int x = arr[i];
+        if (x >= MIN_VAL && x <= MAX_VAL) {
+            freq[x]++;
+        }
+        else {
+            std::cerr << "Warning: value " << x << " is out of range ["
+                << MIN_VAL << ", " << MAX_VAL << "]\n";
+        }
+    }
+
+    // Найдём максимальную частоту для масштабирования (чтобы гистограмма не была слишком высокой)
+    int maxFreq = 0;
+    for (int v = MIN_VAL; v <= MAX_VAL; ++v) {
+        maxFreq = std::max(maxFreq, freq[v]);
+    }
+
+    const int MAX_BAR_HEIGHT = 10; // ограничим высоту столбца, чтобы влезло в консоль
+    int scale = 1;
+    if (maxFreq > MAX_BAR_HEIGHT && maxFreq != 0) {
+        scale = (maxFreq + MAX_BAR_HEIGHT - 1) / MAX_BAR_HEIGHT; // округление вверх
+    }
+
+    std::cout << "Hystogram of frequency of numbers from " << MIN_VAL
+        << " to " << MAX_VAL << ":\n\n";
+
+    for (int v = MIN_VAL; v <= MAX_VAL; ++v) {
+        std::cout << v << ": ";
+        int barLen = freq[v] / scale; // масштабируем длину
+        for (int k = 0; k < barLen; ++k) {
+            std::cout << "#";
+        }
+        if (freq[v] == 0) {
+            std::cout << "(no)";
+        }
+        std::cout << " (" << freq[v] << ")\n";
+    }
+
+    return 0;
+}
