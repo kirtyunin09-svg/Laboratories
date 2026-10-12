@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+#include <random>
+
+int main() {
+    const int n = 20;
+    std::vector<int> arr(n);
+    
+    std::mt19937 gen(std::random_device{}());
+    std::uniform_int_distribution<> dist(-100, 100);
+    
+    for (int i = 0; i < n; ++i) {
+        arr[i] = dist(gen);
+    }
+    
+    long long prod = 1;
+    long long sum = 0;
+    bool hasPositive = false;
+    
+    for (int x : arr) {
+        if (x > 0) {
+            prod *= x;
+            hasPositive = true;
+        } else if (x < 0) {
+            sum += x;
+        }
+    }
+    
+    if (!hasPositive) prod = 0;
+    
+    std::cout << "Multiplication of positive: " << prod << "\n";
+    std::cout << "Sum of negative: " << sum << "\n";
+    
+    return 0;
+}
