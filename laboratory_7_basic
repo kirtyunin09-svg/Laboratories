@@ -1,0 +1,30 @@
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+#include <ctime>
+
+int main {
+  const int N = 4;
+  int matrix[N][N];
+  std::srand(static_cast<unsigned>(std::time(nullptr)));
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+      matrix[i][j] = 0 + std::rand() % 100;
+    }
+  }
+  std::cout << "Matrix " << N << "x" << N << ":" << std::endl;
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+      std::cout << std::setw(4) << matrix[i][j];
+    }
+    std::cout << std::endl;
+  }
+  std::cout << std::endl;
+  std::cout << "\nElements down the main diagonal:" << std::endl;
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+      std::cout << "matrix[" << i << "][" << j << "] = " << matrix[i][j] << std::endl;
+    }
+  }
+  return 0;
+}
