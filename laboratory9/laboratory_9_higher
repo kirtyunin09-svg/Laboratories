@@ -1,0 +1,95 @@
+#include <iostream>
+#include <cstdlib> 
+#include <ctime>   
+
+enum GuessResult {
+    TOO_LOW,
+    TOO_HIGH,
+    CORRECT
+};
+
+int generateNumber(int min, int max) {
+    return min + rand() % (max - min + 1);
+}
+
+int getGuess() {
+    int guess;
+    std::cout << "Enter your guess: ";
+    while (!(std::cin >> guess)) { 
+        std::cout << "Input error. Please enter a whole number: ";
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    }
+    return guess;
+}
+
+GuessResult checkGuess(int guess, int target) {
+    if (guess < target) {
+        return TOO_LOW;
+    }
+    else if (guess > target) {
+        return TOO_HIGH;
+    }
+    else {
+        return CORRECT;
+    }
+}
+
+void printStatistics(int attempts, int target) {
+    std::cout << "\n===================================\n";
+    std::cout << "Game ended!\n";
+    std::cout << "The mystery number was: " << target << "\n";
+    std::cout << "Attempts used: " << attempts << "\n";
+
+    if (attempts <= 5) {
+        std::cout << "Excellent result! You're a mentalist.\n";
+    }
+    else if (attempts <= 10) {
+        std::cout << "Good game!\n";
+    }
+    else {
+        std::cout << "You could have been faster :)\n";
+    }
+    std::cout << "===================================\n";
+}
+
+void playGame() {
+    const int MIN_NUM = 1;
+    const int MAX_NUM = 100;
+
+    int targetNumber = generateNumber(MIN_NUM, MAX_NUM);
+    int attempts = 0; 
+    bool isGuessed = false;
+
+    std::cout << "Welcome to the 'Guess a Number' game!\n";
+    std::cout << "I thought of a number from " << MIN_NUM << " to " << MAX_NUM << ".\n";
+    std::cout << "Try to guess it.\n\n";
+
+    while (!isGuessed) {
+        int userGuess = getGuess();
+        attempts++; 
+
+        GuessResult result = checkGuess(userGuess, targetNumber);
+
+        if (result == TOO_LOW) {
+            std::cout << "The mystery number is BIGGER.\n\n";
+        }
+        else if (result == TOO_HIGH) {
+            std::cout << "The mystery number is SMALLER.\n\n";
+        }
+        else {
+            std::cout << "\nCongratulations! You've guessed a number " << targetNumber << "!\n";
+            isGuessed = true;
+        }
+    }
+
+    printStatistics(attempts, targetNumber);
+}
+
+int main() {
+    srand(static_cast<unsigned int>(time(0)));
+
+    playGame();
+
+    return 0;
+}
