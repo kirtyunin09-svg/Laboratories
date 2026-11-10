@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+std::string longestCommonSubstring(const std::string & a, const std::string & b) {
+  const size_t n = a.size();
+  const size_t m = b.size();
+  std::vector<int> prev(m + 1, 0), cur(m + 1, 0);
+  int bestLen = 0;
+  size_t bestEndInA = 0;
+  for (size_t i = 1; i <= n; ++i) {
+    for (size_t j = 1; j <= m; ++j) {
+      if (a[i - 1] == b[j - 1]) {
+        cur[j] = prev[j - 1] + 1;
+        if (cur[j] > bestLen) {
+          bestLen = cur[j];
+          bestEndInA = i;
+        }
+      } else {
+        cur[j] = 0;
+      }
+    }
+    std::swap(prev, cur);
+    std::fill(cur.begin(), cur.end(), 0);
+  }
+  return a.substr(bestEndInA - bestLen, bestLen);
+}
+int main() {
+  std::string a;
+  std::cout << "Enter the first line: ";
+  std::cin >> a;
+  std::string b;
+  std::cout << "Enter the second line: ";
+  std::cin >> b;
+  std::cout << longestCommonSubstring(a, b) << '\n';
+}
