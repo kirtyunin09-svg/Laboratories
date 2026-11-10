@@ -1,0 +1,31 @@
+#include <iostream>
+
+bool isPowerOfTwo(int n) {
+    if (n <= 0) {
+        return false;
+    }
+
+    while (n % 2 == 0) {
+        n /= 2;
+    }
+
+    return n == 1;
+}
+
+int main() {
+    int n;
+    std::cout << "Enter a number: ";
+    std::cin >> n;
+    if (std::cin.fail()) {
+        std::cout << "Error! Please enter a number, not a letter!";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    if (isPowerOfTwo(n)) {
+        std::cout << n << " is power of 2";
+    }
+    else {
+        std::cout << n << " is not a power of 2";
+    }
+    return 0;
+}
