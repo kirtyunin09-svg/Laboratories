@@ -1,0 +1,26 @@
+#include <iostream>
+
+int factorial(int n) {
+  if (n < 0) return 0;
+
+  int result = 1;
+  for (int i = 2; i <= n; ++i) {
+    result *= i;
+  }
+  return result;
+}
+
+int main() {
+  int n;
+
+  std::cout << "Enter the number n (n <= 10): ";
+  std::cin >> n;
+  if (n < 0 || n > 10) {
+    std::cout << "Error: the number must be from 0 to 10!" << std::endl;
+  }
+  else {
+    std::cout << "The factorial of " << n << " is: " << factorial(n) << std::endl;
+  }
+
+  return 0;
+}
