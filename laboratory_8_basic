@@ -1,0 +1,14 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+  std::string s1;
+  std::cout << "Enter the first line: ";
+  std::cin >> s1;
+  std::string s2;
+  std::cout << "Enter the second line: ";
+  std::cin >> s2;
+  std::string s3 = s1 + " " + s2;
+  std::cout << s3 << std::endl;
+}
